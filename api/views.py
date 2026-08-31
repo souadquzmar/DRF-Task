@@ -1,10 +1,18 @@
 from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.permissions import AllowAny
-from api.serializers import RegisterSerializer
+from .serializers import ProfileSerializer, RegisterSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User
-
+ 
 # Create your views here.
+
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+    def get_object(self):
+        return self.request.user.profile
+      
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = [AllowAny]
