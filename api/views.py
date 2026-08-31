@@ -1,10 +1,15 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import ProfileSerializer, RegisterSerializer
+from .models import Announcement, User
+from .serializers import ProfileSerializer, RegisterSerializer, AnnouncementSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import User
- 
+
 # Create your views here.
+class AnnouncementView(generics.ListCreateAPIView):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
+    permission_classes = [IsAuthenticated]
+ 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer

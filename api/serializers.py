@@ -1,8 +1,19 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-
 from .models import *
 from django.contrib.auth.password_validation import validate_password
+
+class AnnouncementSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    class Meta:
+        model = Announcement
+        fields = ['id', 'author', 'title', 'content', 'created_at']
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        announcement = Announcement.objects.create(author=request.user, **validated_data)
+        return announcement
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
