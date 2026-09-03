@@ -10,7 +10,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True)
-    avatar_url = models.URLField(blank=True)
+    avatar = models.FileField(blank=True, null=True, upload_to='avatars/')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

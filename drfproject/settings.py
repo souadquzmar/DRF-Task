@@ -141,3 +141,19 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": os.getenv("MINIO_ACCESS_KEY_ID"),
+            "secret_key": os.getenv("MINIO_SECRET_ACCESS_KEY"),
+            "bucket_name": os.getenv("MINIO_BUCKET_NAME"),
+            "endpoint_url": os.getenv("MINIO_ENDPOINT_URL"),
+            "region_name": os.getenv("MINIO_REGION"),
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
