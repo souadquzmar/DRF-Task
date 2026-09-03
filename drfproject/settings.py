@@ -153,4 +153,8 @@ STORAGES = {
             "region_name": os.getenv("B2_REGION"),
         },
     },
+
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }

@@ -32,12 +32,12 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True)
     bio = serializers.CharField(allow_blank=True, required=False)
-    avatar_url = serializers.FileField(allow_blank=True, required=False)
+    avatar = serializers.FileField(allow_null=True, required=False)
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'password2', 'bio', 'avatar_url']
+        fields = ['id', 'username', 'email', 'password', 'password2', 'bio', 'avatar']
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -46,7 +46,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         bio = validated_data.pop('bio','')
-        avatar_url = validated_data.pop('avatar_url','')
+        avatar = validated_data.pop('avatar','')
 
         user = User.objects.create_user(
             username=validated_data['username'],
@@ -54,6 +54,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
 
-        Profile.objects.create(user=user, bio=bio, avatar_url=avatar_url)
+        Profile.objects.create(user=user, bio=bio, avatar=avatar)
 
         return user
