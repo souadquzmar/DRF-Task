@@ -26,13 +26,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'bio', 'avatar_url', 'created_at']
+        fields = ['id', 'user', 'bio', 'avatar', 'created_at']
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True)
     bio = serializers.CharField(allow_blank=True, required=False)
-    avatar_url = serializers.URLField(allow_blank=True, required=False)
+    avatar_url = serializers.FileField(allow_blank=True, required=False)
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
 
     class Meta:
